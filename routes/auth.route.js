@@ -1,8 +1,8 @@
 
 import { Router } from 'express'
+const router = Router()
 import authenticationController from '../controllers/authentication.contoller'
 
-const router = Router()
 
 
 router.get("/", (req, res) => {

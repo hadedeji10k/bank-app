@@ -38,6 +38,15 @@ const UserSchema = new Schema (
             type: Number,
             default: 10000,
         },
+        transactions: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Transaction",
+            },
+        ],
+        transactionPin: {
+            type: Number,
+        },
         password: {
             type: String,
             required: true,
@@ -51,7 +60,7 @@ const UserSchema = new Schema (
         },
         passwordResetCode: {
             type: String,
-        }
+        },
     },
     { timestamps: true }
 )

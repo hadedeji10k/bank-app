@@ -11,7 +11,7 @@ const { connect } = pkg;
 import env from './config/environment/index'
 
 import authRoutes from "./routes/auth.route"
-// import serviceRoute from "./routes/services.route"
+import transactionRoute from "./routes/transaction.route"
 
 const app = express();
 
@@ -45,7 +45,7 @@ app.use(
 )
 
 app.use('/api/v1/auth', authRoutes)
-// app.use('/api/v1', serviceRoute)
+app.use('/api/v1', transactionRoute)
 
 const startServer = async () => {
     try {
