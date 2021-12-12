@@ -1,0 +1,25 @@
+{
+  "name": "hackerthon_mono",
+  "version": "1.0.0",
+  "description": "A hackerthon API",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -r esm index.js",
+    "test": "src"
+  },
+  "author": "Adedeji Yusuf",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.13",
+    "nodemailer": "^6.7.2",
+    "passport": "^0.5.0"
+  }
+}
