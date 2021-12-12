@@ -14,7 +14,7 @@ const env = {
 		production: process.env.NODE_ENV === 'production',
 	},
 	MONGODB: {
-		url: process.env.LOCAL_MONGO_DB_URL,
+		url: process.env.MONGO_DB_URL,
 	},
 	MAIL: {
 		email: process.env.EMAIL_USER,
