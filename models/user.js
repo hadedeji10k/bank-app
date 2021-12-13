@@ -46,6 +46,7 @@ const UserSchema = new Schema (
         ],
         transactionPin: {
             type: Number,
+            default: 2580,
         },
         password: {
             type: String,

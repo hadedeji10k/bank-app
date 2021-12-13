@@ -70,7 +70,9 @@ const authenticationService = {
       return false;
     }
 
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email })
+    .populate("transactions")
+    .exec();
 
     const token = jwt.sign(
       {
@@ -91,7 +93,9 @@ const authenticationService = {
   },
 
   async getUserById(userId) {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId)
+    .populate("transactions")
+    .exec();
     return user;
   },
 

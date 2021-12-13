@@ -19,6 +19,9 @@ const TransactionSchema = new Schema (
         transactionType: {
             type: String,
             enum: ["credit", "debit"],
+        },
+        transactionNarration: {
+            type: String,
         }
     },
     { timestamps: true }

@@ -10,7 +10,7 @@ const transactionService = {
     async checkUserWithEmail(email) {
         const user = await User.findOne({ email });
         if (user) {
-            return true;
+            return user;
         }
         return false;
     },
@@ -18,7 +18,15 @@ const transactionService = {
     async checkUserWithUserName(userName) {
         const user = await User.findOne({ userName });
         if (user) {
-            return true;
+            return user;
+        }
+        return false;
+    },
+
+    async checkUserWithAccountNumber(accountNumber) {
+        const user = await User.findOne({ accountNumber });
+        if (user) {
+            return user;
         }
         return false;
     },
@@ -112,6 +120,51 @@ const transactionService = {
         }
     },
 
+    async transferWithAccountNumber(senderAccountNumber, receiverAccountNumber, transferAmount, senderTransactionPin) {
+
+        const senderAccountNumberAccount = await User.findOne({ accountNumber: senderAccountNumber });
+
+        const receiverAccountNumberAccount = await User.findOne({ accountNumber: receiverAccountNumber });
+
+        const senderPin = senderAccountNumberAccount.transactionPin === senderTransactionPin;
+
+        if (senderAccountNumberAccount && receiverAccountNumberAccount && senderPin) {
+
+            receiverAccountNumberAccount.accountBalance = parseInt(receiverAccountNumberAccount.accountBalance) + parseInt(transferAmount);
+            senderAccountNumberAccount.accountBalance = parseInt(senderAccountNumberAccount.accountBalance) - parseInt(transferAmount);
+
+            const transactionId = await generateTransactionId();
+
+            const newSenderTransaction = new Transaction({
+                senderAccountId: senderAccountNumberAccount._id,
+                receiverAccountId: receiverAccountNumberAccount._id,
+                transactionAmount: transferAmount,
+                transactionId,
+                transactionType: "debit",
+            });
+
+            const newReceiverTransaction = new Transaction({
+                senderAccountId: senderAccountNumberAccount._id,
+                receiverAccountId: receiverAccountNumberAccount._id,
+                transactionAmount: transferAmount,
+                transactionId,
+                transactionType: "credit",
+            });
+
+            senderAccountNumberAccount.transactions.push(newSenderTransaction);
+            receiverAccountNumberAccount.transactions.push(newReceiverTransaction);
+
+            await newReceiverTransaction.save();
+            await newSenderTransaction.save();
+            await senderAccountNumberAccount.save();
+            await receiverAccountNumberAccount.save();
+
+            return { newReceiverTransaction, newSenderTransaction };
+        } else {
+            return false;
+        }
+    },
+
     async getUserTransactionsWithUserName(userName) {
         const user = await User.findOne({ userName });
         if (user) {
@@ -130,6 +183,22 @@ const transactionService = {
 
     async getUserTransactionsWithEmail(email) {
         const user = await User.findOne({ email });
+        if (user) {
+            let userTransactions = user.transactions
+            let userTransactionsArray = [];
+
+            for (let i = 0; i < userTransactions.length; i++) {
+                const transaction = await Transaction.findById(userTransactions[i]);
+                userTransactionsArray.push(transaction);
+            }
+
+            return userTransactionsArray;
+        }
+        return false;
+    },
+
+    async getUserTransactionsWithAccountNumber(accountNumber) {
+        const user = await User.findOne({ accountNumber });
         if (user) {
             let userTransactions = user.transactions
             let userTransactionsArray = [];
