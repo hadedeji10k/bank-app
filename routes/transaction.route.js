@@ -17,4 +17,7 @@ router.get("/transactions/userName/:userName", transactionController.getUserTran
 router.get("/transactions/accountNumber/:accountNumber", transactionController.getUserTransactionsWithAccountNumber)
 
 
+router.get("/transactions/:id", transactionController.getTransactionById)
+
+
 export default router;

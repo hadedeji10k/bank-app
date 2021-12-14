@@ -213,6 +213,14 @@ const transactionService = {
         return false;
     },
 
+    async getTransactionById(transactionId) {
+        const transaction = await Transaction.findById(transactionId).populate('senderAccountId').populate('receiverAccountId');
+        if (transaction) {
+            return transaction;
+        }
+        return false;
+    },
+
 // set transaction pin
 // change transaction pin 
 

@@ -198,6 +198,26 @@ const transactionController = {
             return errorResponseHandler(res, error);
         }
     },
+
+    getTransactionById: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const transaction = await transactionService.getTransactionById(id);
+            if (transaction) {
+                return successResponseHandler(
+                    res,
+                    200,
+                    transaction,
+                    "Transaction fetched successfully",
+                    true
+                  );
+            } else {
+                return errorResponseHandler(res, 400, "Transaction not found or not fetched successfully", false)
+            }
+        } catch (error) {
+            return errorResponseHandler(res, error);
+        }
+    },
 }
 
 export default transactionController;
