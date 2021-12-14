@@ -96,7 +96,22 @@ const authenticationService = {
     const user = await User.findById(userId)
     .populate("transactions")
     .exec();
-    return user;
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        role: user.role,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        name: user.name,
+        accountNumber: user.accountNumber,
+        userName: user.userName,
+        accountBalance: user.accountBalance
+      },
+      env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    return { token, user };
   },
 
   async getAllUsers() {
